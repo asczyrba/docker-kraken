@@ -13,6 +13,7 @@ LOCALDIR=$1
 SPOOLDIR=$2
 COMMAND=$3
 
+sudo docker pull asczyrba/kraken
 sudo docker run \
     -e "SGE_TASK_LAST=$SGE_TASK_LAST" \
     -e "SGE_TASK_ID=$SGE_TASK_ID" \

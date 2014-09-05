@@ -12,7 +12,7 @@ GetOptions("s3src=s"        => \$s3src,
 	   "krakendb=s"     => \$krakendb
     );
 
-$grid_nodes = $ENV{"SGE_LAST_TASK"};
+$grid_nodes = $ENV{"SGE_TASK_LAST"};
 $current_node = $ENV{"SGE_TASK_ID"};
 
 unless ($s3src && $infile && $krakendb) {

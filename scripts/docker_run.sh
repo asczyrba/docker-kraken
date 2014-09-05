@@ -3,12 +3,27 @@
 # script to submit to qsub array job, that calls "docker run..."
 # -> qsub -t 1-<num_tasks> -cwd docker_run.sh <num_tasks> <filename> ...	
 
+if [ $# -ne 6 ]
+  then
+    echo "Usage: docker_run.sh NUM_TASKS INFILE INDIR DBDIR OUTDIR COMMAND"
+    exit 0;
+fi
+
+NUM_TASKS=$1
+INFILE=$2
+INDIR=$3
+DBDIR=$4
+OUTDIR=$5
+COMMAND=$6
+
 sudo docker run \
-	-e "FILE=$1" \
-	-e "NUM_TASKS=$2" \
-	-e "TASK_ID=$SGE_TASK_ID" \
-	-e "DATABASE=$3" \
-	-v $4:/vol/in \
-	-v $5:/vol/db \
-	-v $6:/vol/out \
-	$7
+    -e "NUM_TASKS=$NUM_TASKS" \
+    -e "TASK_ID=$SGE_TASK_ID" \
+    -e "INFILE=$INFILE" \
+    -v $INDIR:/vol/in \
+    -v $DBDIR:/vol/db \
+    -v $OUTDIR:/vol/out \
+    asczyrba/kraken \
+    $COMMAND
+
+

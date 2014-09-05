@@ -34,4 +34,4 @@ ADD ./scripts/ /vol/scripts/
 #RUN chmod 755 /init_pipeline.sh
 
 # set entrypoint to initialize the pipeline
-#ENTRYPOINT ["/init_pipeline.sh"]
+#ENTRYPOINT ["/vol/scripts/init_pipeline.sh"]

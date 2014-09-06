@@ -14,28 +14,28 @@ GetOptions("type=s"         => \$type,
     );
 
 unless ($type && $source && $dest) {
-    die "\nusage: $0 -type [folder|file|fastq-split] -source SOURCE -dest DESTINATION [-grid-nodes INT -current-node INT]
+    die "\nusage: $0 -type [folder|file|split-fastq] -source SOURCE -dest DESTINATION [-grid-nodes INT -current-node INT]
 
 ";
 }
 
 
-if ($type == "folder") {
+if ($type eq "folder") {
     $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar -r ".
 		   "--region eu-west-1 ".
 		   "-d $source $dest");
 }
-elsif ($type == "file") {
+elsif ($type eq "file") {
     $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar ".
 		   "--region eu-west-1 ".
 		   "-d $source $dest");
 }
-elsif ($type == "split-fastq") {
+elsif ($type eq "split-fastq") {
     if (($grid_nodes eq '') || ($current_node eq '')) {
 	die "specify grid-nodes and current-node for split-fastq download type\n";
     }
     $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar ".
-		   "--region eu=west-1 ".
+		   "--region eu-west-1 ".
 		   "--grid-download ".
 		   "--grid-download-feature-fastq ".
 		   "--grid-nodes $grid_nodes ".
@@ -47,4 +47,4 @@ else {
 }
 
 print STDERR "calling: $bibis3call\n";
-#system($bibis3call);
+system($bibis3call);

@@ -1,8 +1,6 @@
 ####
-# Docker base pipeline
-# use this as boilerplate to create your own pipeline
+# Docker kraken pipeline
 #
-# Version 0.42
 ####
 
 # use the ubuntu:precise base image provided by dotCloud

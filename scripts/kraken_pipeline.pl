@@ -2,6 +2,7 @@
 
 use Getopt::Long;
 use File::Path;
+use File::Basename;
 use Sys::Hostname;
 use strict;
 
@@ -40,10 +41,12 @@ print STDERR "/vol/scripts/download.pl -type file -source $infile -dest /vol/scr
 system("/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch");
 print STDERR "Done downloading FASTQ file.\n";
 
+my $fastqfile = basename($infile);
+
 ## run kraken
 print STDERR "running kraken:\n";
-print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node\n";
-system("/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node");
+print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile\n";
+system("/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile");
 print STDERR "kraken done.\n";
 
 

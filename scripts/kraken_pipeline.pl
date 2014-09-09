@@ -49,4 +49,9 @@ print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fast
 system("/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile");
 print STDERR "kraken done.\n";
 
+## create reports
+print STDERR "creating Kraken report:\n";
+print STDERR "/vol/kraken/kraken-report --db $krakendb_dir /vol/spool/kraken.out.$current_node > /vol/spool/kraken.out.$current_node.report\n";
+system("/vol/kraken/kraken-report --db $krakendb_dir /vol/spool/kraken.out.$current_node > /vol/spool/kraken.out.$current_node.report");
+print STDERR "Kraken report done.\n";
 

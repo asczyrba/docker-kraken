@@ -15,19 +15,13 @@ RUN apt-get update
 RUN apt-get install -y -f perl-modules libgomp1 openjdk-7-jre
 
 # create directories where the host file system can be mounted
-# required!
-RUN mkdir -p /vol
-# required!
-RUN mkdir /vol/tmp
+RUN mkdir /vol
 
 # copy the required scripts that run the pipeline from your machine to the
 # Docker image and make them executable
-# required!
 ADD ./kraken/ /vol/kraken/
 RUN chmod 755 /vol/kraken/*
 ADD ./scripts/ /vol/scripts/
-#ADD ./init_pipeline.sh /
-#RUN chmod 755 /init_pipeline.sh
 
 # set entrypoint to initialize the pipeline
 #ENTRYPOINT ["/vol/scripts/init_pipeline.sh"]

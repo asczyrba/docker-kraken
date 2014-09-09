@@ -26,7 +26,7 @@ Example: kraken_pipeline.pl -krakendb s3://bibicloud-demo/kraken-db/minikraken_2
 my $host = hostname;
 my $krakendb_dir = '/vol/scratch/krakendb';
 mkpath($krakendb_dir);
-print STDERR "host: $host, SGE_LAST_TASK: $grid_nodes, SGE_TASK_ID: $current_node\n";
+print STDERR "host: $host, SGE_TASK_LAST: $grid_nodes, SGE_TASK_ID: $current_node\n";
 
 print STDERR "Donwloading Database to /vol/scratch/krakendb/...\n";
 print STDERR "/vol/scripts/download.pl -type folder -source $krakendb/ -dest $krakendb_dir\n";
@@ -34,8 +34,16 @@ system("/vol/scripts/download.pl -type folder -source $krakendb/ -dest $krakendb
 print STDERR "Done downloading Database.\n";
 
 print STDERR "Donwloading FASTQ File to /vol/scratch/...\n";
-print STDERR "/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node\n";
-system("/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node");
+#print STDERR "/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node\n";
+#system("/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node");
+print STDERR "/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch\n";
+system("/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch");
 print STDERR "Done downloading FASTQ file.\n";
+
+## run kraken
+print STDERR "running kraken:\n";
+print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node\n";
+system("/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node");
+print STDERR "kraken done.\n";
 
 

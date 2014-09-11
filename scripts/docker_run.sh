@@ -17,6 +17,7 @@ sudo docker pull asczyrba/kraken
 sudo docker run \
     -e "SGE_TASK_LAST=$SGE_TASK_LAST" \
     -e "SGE_TASK_ID=$SGE_TASK_ID" \
+    -e "NSLOTS=$NSLOTS" \
     -v $LOCALDIR:/vol/scratch \
     -v $SPOOLDIR:/vol/spool \
     asczyrba/kraken \

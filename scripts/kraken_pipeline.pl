@@ -6,15 +6,16 @@ use File::Basename;
 use Sys::Hostname;
 use strict;
 
-my ($infile, $krakendb, $grid_nodes, $current_node);
+my ($infile, $krakendb);
 
 
 GetOptions("infile=s"       => \$infile,
 	   "krakendb=s"     => \$krakendb
     );
 
-$grid_nodes = $ENV{"SGE_TASK_LAST"};
-$current_node = $ENV{"SGE_TASK_ID"};
+my $grid_nodes = $ENV{"SGE_TASK_LAST"};
+my $current_node = $ENV{"SGE_TASK_ID"};
+my $threads = $ENV{"NSLOTS"};
 
 unless ($infile && $krakendb) {
     die "\nusage: $0 -infile FASTQFILE_S3_URL -krakendb KRAKEN_DB_S3_URL
@@ -27,7 +28,7 @@ Example: kraken_pipeline.pl -krakendb s3://bibicloud-demo/kraken-db/minikraken_2
 my $host = hostname;
 my $krakendb_dir = '/vol/scratch/krakendb';
 mkpath($krakendb_dir);
-print STDERR "host: $host, SGE_TASK_LAST: $grid_nodes, SGE_TASK_ID: $current_node\n";
+print STDERR "host: $host, SGE_TASK_LAST: $grid_nodes, SGE_TASK_ID: $current_node, NSLOTS: $threads\n";
 
 print STDERR "Donwloading Database to /vol/scratch/krakendb/...\n";
 print STDERR "/vol/scripts/download.pl -type folder -source $krakendb/ -dest $krakendb_dir\n";
@@ -45,8 +46,8 @@ my $fastqfile = basename($infile);
 
 ## run kraken
 print STDERR "running kraken:\n";
-print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile\n";
-system("/vol/kraken/kraken --preload --db $krakendb_dir --threads 8 --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile");
+print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads $threads --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile\n";
+system("/vol/kraken/kraken --preload --db $krakendb_dir --threads $threads --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile");
 print STDERR "kraken done.\n";
 
 ## create reports

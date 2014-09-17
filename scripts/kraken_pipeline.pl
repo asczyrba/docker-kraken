@@ -20,8 +20,11 @@ my $threads = $ENV{"NSLOTS"};
 unless ($infile && $krakendb) {
     die "\nusage: $0 -infile FASTQFILE_S3_URL -krakendb KRAKEN_DB_S3_URL
 
-Example: kraken_pipeline.pl -krakendb s3://bibicloud-demo/kraken-db/minikraken_20140330 -infile s3://bibicloud-demo/HMP_Stool_Sample/SRS011405_20M.fastq
+Small example (4GB Kraken DB, 2.6GB FASTQ file): 
+kraken_pipeline.pl -krakendb s3://bibicloud-demo/kraken-db/minikraken_20140330.tar -infile s3://bibicloud-demo/HMP_Stool_Sample/SRS011405_20M.fastq
 
+Big example (142GB Kraken DB, 13GB FASTQ file):
+kraken_pipeline.pl -krakendb s3://bibicloud-demo/kraken-db/kraken_standard.tar -infile s3://bibicloud-demo/HMP_Stool_Sample/SRS011405_50M.fastq
 ";
 }
 
@@ -30,12 +33,15 @@ my $krakendb_dir = '/vol/scratch/krakendb';
 mkpath($krakendb_dir);
 print STDERR "host: $host, SGE_TASK_LAST: $grid_nodes, SGE_TASK_ID: $current_node, NSLOTS: $threads\n";
 
-print STDERR "Donwloading Database to /vol/scratch/krakendb/...\n";
-print STDERR "/vol/scripts/download.pl -type folder -source $krakendb/ -dest $krakendb_dir\n";
-system("/vol/scripts/download.pl -type folder -source $krakendb/ -dest $krakendb_dir");
+print STDERR "Downloading Database to /vol/scratch/krakendb/...\n";
+print STDERR "/vol/scripts/download.pl -type file -source $krakendb -dest $krakendb_dir\n";
+system("/vol/scripts/download.pl -type file -source $krakendb -dest $krakendb_dir");
+chdir $krakendb_dir;
+print STDERR "tar xvf $krakendb\n";
+system("tar xvf $krakendb");
 print STDERR "Done downloading Database.\n";
 
-print STDERR "Donwloading FASTQ File to /vol/scratch/...\n";
+print STDERR "Downloading FASTQ File to /vol/scratch/...\n";
 #print STDERR "/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node\n";
 #system("/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node");
 print STDERR "/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch\n";

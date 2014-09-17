@@ -12,7 +12,7 @@ MAINTAINER Name asczyrba@cebitec.uni-bielefeld.de
 # e.g. RUN apt-get install -y -f bc
 
 RUN apt-get update
-RUN apt-get install -y -f perl-modules libgomp1 openjdk-7-jre python3
+RUN apt-get install -y -f perl-modules libgomp1 openjdk-7-jre
 
 # create directories where the host file system can be mounted
 RUN mkdir /vol
@@ -22,7 +22,6 @@ RUN mkdir /vol
 ADD ./kraken/ /vol/kraken/
 RUN chmod 755 /vol/kraken/*
 ADD ./scripts/ /vol/scripts/
-ADD ./krona/ /vol/krona/
 
 # set entrypoint to initialize the pipeline
 #ENTRYPOINT ["/vol/scripts/init_pipeline.sh"]

@@ -53,6 +53,8 @@ print STDERR "Done downloading FASTQ file.\n";
 
 my $fastqfile = basename($infile);
 
+chdir "/vol/spool";
+
 ## run kraken
 print STDERR "running kraken:\n";
 print STDERR "/vol/kraken/kraken --preload --db $krakendb_dir --threads $threads --fastq-input --output /vol/spool/kraken.out.$current_node /vol/scratch/$fastqfile\n";
@@ -64,4 +66,18 @@ print STDERR "creating Kraken report:\n";
 print STDERR "/vol/kraken/kraken-report --db $krakendb_dir /vol/spool/kraken.out.$current_node > /vol/spool/kraken.out.$current_node.report\n";
 system("/vol/kraken/kraken-report --db $krakendb_dir /vol/spool/kraken.out.$current_node > /vol/spool/kraken.out.$current_node.report");
 print STDERR "Kraken report done.\n";
+
+## combine Kraken output and convert
+print STDERR "combining Kraken outputs:\n";
+print STDERR "/vol/scripts/kraken_to_txt.py /vol/spool /vol/spool/kraken_output.combined n\n";
+system("/vol/scripts/kraken_to_txt.py /vol/spool /vol/spool/kraken_output.combined n");
+print STDERR "DONE combining Kraken outputs\n";
+
+## create Krona file
+print STDERR "creating KRONA file:\n";
+print STDERR "/vol/krona/bin/ktImportText -o kraken_krona.html /vol/spool/kraken_output.combined\n"; 
+system("/vol/krona/bin/ktImportText -o /vol/spool/kraken_krona.html /vol/spool/kraken_output.combined");
+print STDERR "KRONA report done.\n";
+
+print STDERR "PIPELINE FINISHED.\n";
 

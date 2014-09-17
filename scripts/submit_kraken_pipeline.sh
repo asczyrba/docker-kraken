@@ -13,26 +13,28 @@ SLOTS=$2
 KRAKENDB=$3
 FASTQ=$4
 
-PIPELINE_HOME="~/docker-kraken"
+PIPELINEHOME="/home/ubuntu/docker-kraken"
 SPOOLDIR="/vol/spool"
 SCRATCHDIR="/vol/scratch"
 
+export PATH=$PIPELINEHOME/krona/bin:$PATH
+
 cd /vol/spool
 echo "Submitting job to SGE and waiting until finished..."
-echo qsub -sync y -t 1-$TASKS -cwd -pe multislot $SLOTS $PIPELINE_HOME/scripts/docker_run.sh $SCRATCHDIR $SPOOLDIR "$PIPELINE_HOME/scripts/kraken_pipeline.pl -krakendb $KRAKENDB -infile $FASTQ"
-qsub -sync y -t 1-$TASKS -cwd -pe multislot $SLOTS $PIPELINE_HOME/scripts/docker_run.sh $SCRATCHDIR $SPOOLDIR "$PIPELINE_HOME/scripts/kraken_pipeline.pl -krakendb $KRAKENDB -infile $FASTQ"
+echo qsub -sync y -t 1-$TASKS -cwd -pe multislot $SLOTS $PIPELINEHOME/scripts/docker_run.sh $SCRATCHDIR $SPOOLDIR "/vol/scripts/kraken_pipeline.pl -krakendb $KRAKENDB -infile $FASTQ"
+qsub -sync y -t 1-$TASKS -cwd -pe multislot $SLOTS $PIPELINEHOME/scripts/docker_run.sh $SCRATCHDIR $SPOOLDIR "/vol/scripts/kraken_pipeline.pl -krakendb $KRAKENDB -infile $FASTQ"
 echo "SGE job done."
 
 ## combine Kraken output and convert
 echo "combining Kraken outputs"
-echo "$PIPELINE_HOME/scripts/kraken_to_txt.py $SPOOLDIR $SPOOLDIR/kraken_output.combined n"
-$PIPELINE_HOME/scripts/kraken_to_txt.py $SPOOLDIR $SPOOLDIR/kraken_output.combined n
+echo "$PIPELINEHOME/scripts/kraken_to_txt.py $SPOOLDIR $SPOOLDIR/kraken_output.combined n"
+$PIPELINEHOME/scripts/kraken_to_txt.py $SPOOLDIR $SPOOLDIR/kraken_output.combined n
 echo "DONE combining Kraken outputs"
 
 ## create Krona file
 echo "creating KRONA file:"
-echo "$PIPELINE_HOME/krona/bin/ktImportText -o kraken_krona.html $SPOOLDIR/kraken_output.combined"
-$PIPELINE_HOME/krona/bin/ktImportText -o $SPOOLDIR/kraken_krona.html $SPOOLDIR/kraken_output.combined
+echo "$PIPELINEHOME/krona/bin/ktImportText -o kraken_krona.html $SPOOLDIR/kraken_output.combined"
+$PIPELINEHOME/krona/bin/ktImportText -o $SPOOLDIR/kraken_krona.html $SPOOLDIR/kraken_output.combined
 echo "KRONA report done."
 
 echo "PIPELINE FINISHED."

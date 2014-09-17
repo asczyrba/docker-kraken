@@ -22,6 +22,7 @@ RUN mkdir /vol
 ADD ./kraken/ /vol/kraken/
 RUN chmod 755 /vol/kraken/*
 ADD ./scripts/ /vol/scripts/
+ADD ./krona/ /vol/krona/
 
 # set entrypoint to initialize the pipeline
 #ENTRYPOINT ["/vol/scripts/init_pipeline.sh"]

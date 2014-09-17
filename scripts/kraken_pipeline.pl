@@ -6,6 +6,8 @@ use File::Basename;
 use Sys::Hostname;
 use strict;
 
+$ENV{PATH} = "$ENV{PATH}:/vol/scripts:/vol/krona/bin";
+
 my ($infile, $krakendb);
 
 
@@ -37,8 +39,9 @@ print STDERR "Downloading Database to /vol/scratch/krakendb/...\n";
 print STDERR "/vol/scripts/download.pl -type file -source $krakendb -dest $krakendb_dir\n";
 system("/vol/scripts/download.pl -type file -source $krakendb -dest $krakendb_dir");
 chdir $krakendb_dir;
-print STDERR "tar xvf $krakendb\n";
-system("tar xvf $krakendb");
+my $kraken_tarfile = basename($krakendb);
+print STDERR "tar xvf $kraken_tarfile\n";
+system("tar xvf $kraken_tarfile");
 print STDERR "Done downloading Database.\n";
 
 print STDERR "Downloading FASTQ File to /vol/scratch/...\n";

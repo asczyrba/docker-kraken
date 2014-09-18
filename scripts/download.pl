@@ -5,6 +5,7 @@ use strict;
 
 my ($type, $source, $dest, $grid_nodes, $current_node);
 my $bibis3call;
+my $bibis3bin = '/vol/scripts/bibis3-1.4.2.jar';
 
 GetOptions("type=s"         => \$type,
 	   "source=s"       => \$source,
@@ -21,12 +22,12 @@ unless ($type && $source && $dest) {
 
 
 if ($type eq "folder") {
-    $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar -r ".
+    $bibis3call = ("java -jar $bibis3bin -r ".
 		   "--region eu-west-1 ".
 		   "-d $source $dest");
 }
 elsif ($type eq "file") {
-    $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar ".
+    $bibis3call = ("java -jar $bibis3bin ".
 		   "--region eu-west-1 ".
 		   "-d $source $dest");
 }
@@ -34,7 +35,7 @@ elsif ($type eq "split-fastq") {
     if (($grid_nodes eq '') || ($current_node eq '')) {
 	die "specify grid-nodes and current-node for split-fastq download type\n";
     }
-    $bibis3call = ("java -jar /vol/scripts/bibis3-1.4.1.jar ".
+    $bibis3call = ("java -jar $bibis3bin ".
 		   "--region eu-west-1 ".
 		   "--grid-download ".
 		   "--grid-download-feature-fastq ".

@@ -45,10 +45,10 @@ system("tar xvf $kraken_tarfile");
 print STDERR "Done downloading Database.\n";
 
 print STDERR "Downloading FASTQ File to /vol/scratch/...\n";
-#print STDERR "/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node\n";
-#system("/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node");
-print STDERR "/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch\n";
-system("/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch");
+print STDERR "/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node\n";
+system("/vol/scripts/download.pl -type split-fastq -source $infile -dest /vol/scratch  -grid-nodes $grid_nodes -current-node $current_node");
+#print STDERR "/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch\n";
+#system("/vol/scripts/download.pl -type file -source $infile -dest /vol/scratch");
 print STDERR "Done downloading FASTQ file.\n";
 
 my $fastqfile = basename($infile);

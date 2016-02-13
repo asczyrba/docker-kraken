@@ -32,7 +32,7 @@ This qsub command assumes that you have 3 compute nodes with 8 cores each.
 Large example (150 GB Kraken DB, 50 mio reads in FASTQ file):
 This qsub command assumes that you have 10 compute nodes with 32 cores each.
 
-    /vol/kraken/docker-kraken/scripts/submit_kraken_pipeline.sh 10 32 s3://bibicloud-demo/kraken-db/kraken_standard.tar s3://bibicloud-demo/HMP_Stool_Sample/SRS011405_50M.fastq
+    /vol/kraken/docker-kraken/scripts/submit_kraken_pipeline.sh 10 32 s3://bibicloud-demo/kraken-db/kraken_standard.tar s3://bibicloud-demo/HMP_Stool_Sample/SRS011405_50M.fastq /vol/spool /vol/scratch
     
 
 After logout, terminate the BiBiGrid cluster:

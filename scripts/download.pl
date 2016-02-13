@@ -5,7 +5,7 @@ use strict;
 
 my ($type, $source, $dest, $grid_nodes, $current_node);
 my $bibis3call;
-my $bibis3bin = '/vol/scripts/bibis3-1.4.2.jar';
+my $bibis3bin = '/vol/scripts/bibis3-1.6.1.jar';
 
 GetOptions("type=s"         => \$type,
 	   "source=s"       => \$source,
